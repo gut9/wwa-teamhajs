@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Md5} from 'ts-md5/dist/md5';
+import {Component, OnInit} from "@angular/core";
+import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -8,19 +8,17 @@ import {Md5} from 'ts-md5/dist/md5';
 })
 export class LoginComponent implements OnInit {
 
-
   username = '';
   password = '';
 
-  constructor() {
+  constructor(private userService: UserService) {
   }
 
   ngOnInit() {
   }
 
   login() {
-    let hashPass = Md5.hashStr(this.password);
-    console.log("Username: " + this.username, "Password: " + this.password, "HashPass: " + hashPass);
+    this.userService.login(this.password, this.username);
   }
 
 }
