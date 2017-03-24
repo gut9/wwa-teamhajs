@@ -4,16 +4,14 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 
 import {AppComponent} from './app.component';
-import {HomeComponent} from './home/home.component';
-import {DashboardComponent} from './dashboard/dashboard.component';
 import {AppRoutingModule} from './app.routing.module';
 import {LoggedInGuard} from './LoggedInGuard';
 import {HomeModule} from './home/home.module';
+import {DashboardModule} from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
   ],
   providers : [
     LoggedInGuard
@@ -23,7 +21,8 @@ import {HomeModule} from './home/home.module';
     FormsModule,
     AppRoutingModule,
     HttpModule,
-    HomeModule
+    HomeModule,
+    DashboardModule
   ],
   bootstrap: [AppComponent]
 })
