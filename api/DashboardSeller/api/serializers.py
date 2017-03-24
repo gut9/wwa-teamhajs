@@ -1,25 +1,26 @@
 from rest_framework import serializers
 
-from api.DashboardSeller.api.models import Averages
-
-from api.DashboardSeller.api.models import User
+from api.models import SellerUser, SellerRating, Averages
 
 
-class AverageSerializer(serializers.ModelSerializer):
+class AveragesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Averages
-        fields = {'title', 'rating'}
+        fields = ('title', 'rating')
 
 
 class SellerRatingSerializer(serializers.ModelSerializer):
-    count = serializers.IntegerField()
-    averages =
-
-
-class UserSerializer(serializers.Serializer):
-    consumer_set = CustomerSerializer('consumer_set', many=True)
+    averages_set = AveragesSerializer('averages_set', many=True)
 
     class Meta:
-        model = User
-        fields = ()
+        model = SellerRating
+        fields = ('count', 'averages_set')
+
+
+class SellerUserSerializer(serializers.ModelSerializer):
+    sellerRatings = SellerRatingSerializer('sellerRatings', many=False)
+    class Meta:
+        model = SellerUser
+        fields = ('UserId', 'login', 'country', 'rating', 'ratingIcon', 'company', 'allegroStandard',
+                  'sellerRatings', 'feedbacks', 'saleRegulations')

@@ -5,11 +5,17 @@ from django.db import models
 class SellerRating(models.Model):
     count = models.IntegerField()
 
+    def __unicode__(self):
+        return str(self.count)
+
 
 class Averages(models.Model):
     title = models.TextField()
     rating = models.FloatField()
     sellerRating = models.ForeignKey(SellerRating)
+
+    def __unicode__(self):
+        return str(self.title)
 
 
 class PositiveFeedbacks(models.Model):
@@ -20,6 +26,9 @@ class PositiveFeedbacks(models.Model):
     asBuyer = models.IntegerField()
     percentage = models.FloatField()
 
+    def __unicode__(self):
+        return str(self.all)
+
 
 class NeutralFeedbacks(models.Model):
     lastWeek = models.IntegerField()
@@ -28,6 +37,9 @@ class NeutralFeedbacks(models.Model):
     asSeller = models.IntegerField()
     asBuyer = models.IntegerField()
     percentage = models.FloatField()
+
+    def __unicode__(self):
+        return str(self.all)
 
 
 class NegativeFeedbacks(models.Model):
@@ -38,15 +50,21 @@ class NegativeFeedbacks(models.Model):
     asBuyer = models.IntegerField()
     percentage = models.FloatField()
 
+    def __unicode__(self):
+        return str(self.all)
+
 
 class Feedbacks(models.Model):
-    all = models.IntegerField
+    all = models.IntegerField()
     positive = models.ForeignKey(PositiveFeedbacks)
     neutral = models.ForeignKey(NeutralFeedbacks)
     negative = models.ForeignKey(NegativeFeedbacks)
 
+    def __unicode__(self):
+        return str(self.all)
 
-class User(models.Model):
+
+class SellerUser(models.Model):
     UserId = models.TextField()
     login = models.TextField()
     country = models.IntegerField()
@@ -57,6 +75,9 @@ class User(models.Model):
     sellerRatings = models.ForeignKey(SellerRating)
     feedbacks = models.ForeignKey(Feedbacks)
     saleRegulations = models.TextField()
+
+    def __unicode__(self):
+        return str(self.login)
 
 
 class Offer(models.Model):
@@ -72,12 +93,18 @@ class Offer(models.Model):
     note = models.TextField()
     watchersCount = models.IntegerField()
     withoutFinishDate = models.BooleanField()
-    owner = models.ForeignKey(User)
+    owner = models.ForeignKey(SellerUser)
+
+    def __unicode__(self):
+        return str(self.name)
 
 
 class Message(models.Model):
-    fromUser = models.ForeignKey(User)
+    fromUser = models.ForeignKey(SellerUser)
     destOffer = models.ForeignKey(Offer)
     text = models.TextField()
     date = models.DateField()
     read = models.BooleanField()
+
+    def __unicode__(self):
+        return str(self.fromUser.name)

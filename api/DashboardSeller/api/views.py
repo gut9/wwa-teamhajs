@@ -1,7 +1,11 @@
 from channels import Group
 from channels.auth import channel_session_user_from_http
 from channels.sessions import channel_session
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from api.models import SellerUser
+from api.serializers import SellerUserSerializer
 
 
 @channel_session_user_from_http
@@ -19,7 +23,14 @@ def ws_disconnect(message):
     pass
 
 
-@api_view(['POST'])
-def perform_login(request):
+class GetUser(APIView):
 
-    if request.method == 'POST':
+    def get(self, request):
+        user = SellerUser.objects.get()
+        serializer = SellerUserSerializer(user, many=False)
+        return Response(serializer.data)
+
+    def post(self, request):
+        user = SellerUser.objects.get()
+        serializer = SellerUserSerializer(user, many=False)
+        return Response(serializer.data)
