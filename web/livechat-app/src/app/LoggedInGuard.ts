@@ -9,12 +9,12 @@ export class LoggedInGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const hasAccess = confirm('Are you logged in?');
-    if (hasAccess) {
-      return hasAccess
-    }
-    this.router.navigate(['']);
-    return false;
+    // const hasAccess = confirm('Are you logged in?');
+    // if (hasAccess) {
+    //   return hasAccess
+    // }
+    // this.router.navigate(['']);
+    return true;
 
   }
 
