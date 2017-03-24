@@ -1,6 +1,7 @@
 import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './dashboard.component';
 import {NgModule} from '@angular/core';
+import {SettingsComponent} from "../settings/settings.component";
 const dashboardRoutes: Routes = [
   {
     path: '',
@@ -9,6 +10,10 @@ const dashboardRoutes: Routes = [
       {
         path: 'chats',
         loadChildren: '../chats/chats.module#ChatsModule'
+      },
+      {
+        path : 'settings',
+        component : SettingsComponent
       }
     ]
   }
