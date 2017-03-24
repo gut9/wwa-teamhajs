@@ -3,7 +3,6 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import {CurrentUserService} from "./current-user.service";
-import {Md5} from 'ts-md5/dist/md5';
 
 @Injectable()
 export class UserService {
@@ -16,10 +15,9 @@ export class UserService {
   // TODO: change endpoint in http.post
 
   login(email: string, password: string): Promise<any> {
-    let hashPass = Md5.hashStr(password);
     return this.http.post(this.HOST + 'auth/login', {
       username: email,
-      password: hashPass
+      password: password
     })
       .map(r => r.json())
       .toPromise()
