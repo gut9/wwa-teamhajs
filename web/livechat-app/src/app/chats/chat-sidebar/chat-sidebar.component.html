@@ -6,7 +6,8 @@
   </div>
   <div class="chat-sidebar__chats chat-sidebar-chats">
     <div class="chat-sidebar-chats__element chat-header" *ngFor="let chatHeader of chatHeaders"
-    (click)="openChat(chatHeader.id)">
+         [ngClass]="{'chat-sidebar-chats__element--selected':isSelected(chatHeader.id)}"
+         (click)="openChat(chatHeader.id)">
       <div class="chat-header__login">{{chatHeader.login}}</div>
       <div class="chat-header__auction">{{chatHeader.auctionName}}</div>
       <div class="chat-header__lastMessage">{{chatHeader.lastMessage}}</div>
