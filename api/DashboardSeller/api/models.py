@@ -101,8 +101,9 @@ class Offer(models.Model):
 
 
 class Message(models.Model):
+    roomId = models.TextField()
+    offerId = models.TextField()
     originUserId = models.TextField()
-    destOfferId = models.TextField()
     text = models.TextField()
     date = models.DateTimeField()
     read = models.BooleanField()

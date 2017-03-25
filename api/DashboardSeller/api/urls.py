@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'^login/', views.LoginPerform.as_view(), name='login'),
     url(r'^messages/', views.ManageMessages.as_view(), name='messages'),
     url(r'^hourStats/', views.HourStatisticsGetter.as_view(), name='hourStats'),
-    url(r'^auctions/', views.GetAuctions.as_view(), name='auctions')
+    url(r'^auctions/', views.GetAuctions.as_view(), name='auctions'),
+    url(r'^getStats/', views.GetVisitStatistics.as_view(), name='auctions')
 ]
