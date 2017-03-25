@@ -1,7 +1,6 @@
 from channels import Group
 from django.db import models
 
-
 # Create your models here.
 from rest_framework.renderers import JSONRenderer
 
@@ -107,17 +106,19 @@ class Offer(models.Model):
 class Message(models.Model):
     roomId = models.TextField()
     offerId = models.TextField()
-    originUserId = models.TextField()
+    authorId = models.TextField()
+    clientId = models.TextField()
     text = models.TextField()
     date = models.DateTimeField()
-    read = models.BooleanField()
+    read = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return str(self.originUserId)
+        return str(self.clientId)
 
     def save(self, **kwargs):
         super(Message, self).save()
-        Group("%s" % self.originUserId).send({'text': JSONRenderer().render({'data': {'clientId': self.originUserId, 'message': self.text}})})
+        Group("%s" % self.clientId).send({'text': JSONRenderer().render(
+            {'data': {'authorId': self.authorId, 'clientId': self.clientId, 'message': self.text}})})
 
 
 class TestMessage(models.Model):
@@ -127,7 +128,8 @@ class TestMessage(models.Model):
 
     def save(self, **kwargs):
         super(TestMessage, self).save()
-        Group("%s" % "1").send({'text': JSONRenderer().render({'data': {'clientId': self.clientId, 'message': self.message}})})
+        Group("%s" % "1").send(
+            {'text': JSONRenderer().render({'data': {'clientId': self.clientId, 'message': self.message}})})
 
 
 class FrequentlyAskedQuestions(models.Model):

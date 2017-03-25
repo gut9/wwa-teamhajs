@@ -154,17 +154,17 @@ class ManageMessages(APIView):
             offer_id = offer.offerId
             messages = Message.objects.filter(offerId=offer_id)
 
-            users_ids = messages.values('originUserId').distinct()
+            users_ids = messages.values('clientId').distinct()
 
             for userDict in users_ids:
-                user_origin_id = userDict["originUserId"]
-                message = messages.filter(originUserId=user_origin_id).latest('date')
+                user_origin_id = userDict["clientId"]
+                message = messages.filter(clientId=user_origin_id).latest('date')
                 user_data = requests.get("https://api.natelefon.pl/v1/allegro/users/" + user_origin_id +
                                          "?access_token=" + access_token)
                 client_name = json.loads(user_data.text)["login"]
                 offer_id = offer.offerId
                 offer_data = requests.get("https://api.natelefon.pl/v1/allegro/offers/" + offer_id +
-                                         "?access_token=" + access_token)
+                                          "?access_token=" + access_token)
                 auction_name = json.loads(offer_data.text)["name"]
 
                 data = {
@@ -179,14 +179,27 @@ class ManageMessages(APIView):
         return Response(response_data)
 
     def post(self, request):
-        user_id = request.POST["originUserId"]
+        user_id = request.POST["clientId"]
         offer_id = request.POST["destOfferId"]
         text = request.POST["text"]
         date = now
         read = False
 
-        new_message = Message(originUserId=user_id, destOfferId=offer_id, text=text, date=date, read=read)
+        new_message = Message(clientId=user_id, destOfferId=offer_id, text=text, date=date, read=read)
         return new_message.save()
+
+
+class GetMessagesForRoom(APIView):
+    def get(self, request):
+        if 'auctionId' not in request.GET.keys() or 'clientId' not in request.GET.keys():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        auction_id = request.GET["auctionId"]
+        client_id = request.GET["clientId"]
+        messages = Message.objects.filter(offerId=auction_id).filter(clientId=client_id)
+        serializer = MessageSerializer(messages, many=True)
+
+        return Response(serializer)
 
 
 class HourStatisticsGetter(APIView):

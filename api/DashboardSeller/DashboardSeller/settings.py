@@ -15,7 +15,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -28,7 +27,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CORS_ORIGIN_ALLOW_ALL = True
-
 
 # Application definition
 
@@ -45,8 +43,8 @@ INSTALLED_APPS = (
     'api',
     'rest_framework',
     'corsheaders',
-    'channels',
-    'rest_framework_docs'
+    'rest_framework_docs',
+    'channels'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -104,10 +102,7 @@ CHANNEL_LAYERS = {
         "ROUTING": "api.routing.channel_routing",
     },
 }
-REST_SESSION_LOGIN = False
-
 WSGI_APPLICATION = 'DashboardSeller.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -118,7 +113,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -132,7 +126,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
