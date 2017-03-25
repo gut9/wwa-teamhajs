@@ -34,6 +34,21 @@ export class ChatComponent implements OnInit {
   constructor(private webSocketService: WebsocketService,
               private route: ActivatedRoute,
               private questionService: QuestionsService) {
+    this.webSocketService.subject().subscribe(res => {
+      let response = JSON.parse(res.data);
+      if (this.route.snapshot.params['clientId'] === response.authorId) {
+        this.messages.push({text: response.message, isClient: false});
+      }
+      // uthorId
+      //   :
+      //   "12312"
+      // clientId
+      //   :
+      //   "34873768"
+      // message
+      //   :
+      //   "Dupa, nie doszlo"
+    })
   }
 
   ngOnInit() {
