@@ -100,13 +100,37 @@ class ManageMessages(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        user_id = request.POST["user_id"]
-        offer_id = request.POST["offer_id"]
+        user_id = request.POST["originUserId"]
+        offer_id = request.POST["destOfferId"]
         text = request.POST["text"]
         date = now
         read = False
 
         new_message = Message(originUserId=user_id, destOfferId=offer_id, text=text, date=date, read=read)
-        # new_message.save()
-        return Message.objects.create(new_message)
+        return new_message.save()
+
+
+class HourStatisticsGetter(APIView):
+    def get(self, request):
+        if 'offer_id' not in request.GET.keys():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        offer_id = request.GET["offer_id"]
+        messages = Message.objects.filter(destOfferId=offer_id)
+
+        messages_counter = 0
+        stats = range(0, 23)
+
+        for i in range(0, 23):
+            stats[i] = 0
+
+        for message in messages:
+            date = message.date
+            stats[date.hour] += 1.0
+            messages_counter += 1
+
+        for i in range(0, 23):
+            stats[i] /= messages_counter
+
+        return Response(stats)
 

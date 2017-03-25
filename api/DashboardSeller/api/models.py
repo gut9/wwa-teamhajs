@@ -104,8 +104,8 @@ class Message(models.Model):
     originUserId = models.TextField()
     destOfferId = models.TextField()
     text = models.TextField()
-    date = models.DateField()
+    date = models.DateTimeField()
     read = models.BooleanField()
 
     def __unicode__(self):
-        return str(self.fromUser.name)
+        return str(self.originUserId)

@@ -39,12 +39,10 @@ class SellerUserSerializer(serializers.ModelSerializer):
 class OfferSerializer(serializers.ModelSerializer):
     owner = SellerUserSerializer('sellerUser', many=False)
 
-
     class Meta:
         model = Offer
         fields = {'offerId', 'name', 'buyNow', 'auction', 'pricesBid', 'pricesBuyNow', 'standardAllegro', 'bidsCount',
                   'category', 'note', 'watchersCount', 'withoutFinishDate', }
-
 
 
 class MessageSerializer(serializers.ModelSerializer):
