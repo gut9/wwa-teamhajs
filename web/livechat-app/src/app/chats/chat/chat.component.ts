@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-chat',
@@ -6,8 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat.component.less']
 })
 export class ChatComponent implements OnInit {
+  @HostBinding('style.flex-grow') flexGrow = 1;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

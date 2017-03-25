@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {ChatsComponent} from './chats.component';
 import { ChatComponent } from './chat/chat.component';
 import {ChatsRoutingModule} from './chats-routing.modules';
+import { ChatSidebarComponent } from './chat-sidebar/chat-sidebar.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import {ChatsRoutingModule} from './chats-routing.modules';
   ],
   declarations: [
     ChatsComponent,
-    ChatComponent
+    ChatComponent,
+    ChatSidebarComponent
   ]
 })
 export class ChatsModule {
