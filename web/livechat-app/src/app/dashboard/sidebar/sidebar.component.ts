@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import * as _ from 'lodash';
 import {ActivatedRoute, Router} from '@angular/router';
+import {CookieService} from "angular2-cookie/core";
 
 @Component({
   selector: 'app-sidebar',
@@ -18,7 +19,7 @@ export class SidebarComponent implements OnInit {
   ];
 
   constructor(private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router, private cookieService: CookieService) {
   }
 
   ngOnInit() {
@@ -28,8 +29,12 @@ export class SidebarComponent implements OnInit {
     _.find(this.options, ['selected', true]).selected = false;
     _.find(this.options, ['label', optionLabel]).selected = true;
     let selectedUrl = _.find(this.options, ['selected', true]).url;
-    this.router.navigate([selectedUrl], {relativeTo: this.route});
-
+    if (selectedUrl === 'logout') {
+      this.cookieService.removeAll();
+      this.router.navigate(['']);
+    } else {
+      this.router.navigate([selectedUrl], {relativeTo: this.route});
+    }
   }
 
 }
