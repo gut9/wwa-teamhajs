@@ -169,6 +169,7 @@ class ManageMessages(APIView):
                 auction_name = json.loads(offer_data.text)["name"]
 
                 data = {
+                    'authorId': message.authorId,
                     'clientId': user_origin_id,
                     'clientName': client_name,
                     'auctionId': offer_id,
@@ -181,13 +182,14 @@ class ManageMessages(APIView):
         return Response(response_data)
 
     def post(self, request):
+        author_id = request.POST["authorId"]
         user_id = request.POST["clientId"]
         offer_id = request.POST["destOfferId"]
         text = request.POST["text"]
         date = now
         read = False
 
-        new_message = Message(clientId=user_id, destOfferId=offer_id, text=text, date=date, read=read)
+        new_message = Message(authorId=author_id, clientId=user_id, destOfferId=offer_id, text=text, date=date, read=read)
         return new_message.save()
 
 
