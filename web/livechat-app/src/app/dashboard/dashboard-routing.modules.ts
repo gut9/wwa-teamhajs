@@ -2,6 +2,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './dashboard.component';
 import {NgModule} from '@angular/core';
 import {SettingsComponent} from "../settings/settings.component";
+import {StatisticsComponent} from "../statistics/statistics.component";
+
 const dashboardRoutes: Routes = [
   {
     path: '',
@@ -14,6 +16,10 @@ const dashboardRoutes: Routes = [
       {
         path: 'settings',
         component: SettingsComponent
+      },
+      {
+        path: 'statistics',
+        component: StatisticsComponent
       }
     ]
   }

@@ -5,13 +5,15 @@ import {SidebarComponent} from './sidebar/sidebar.component';
 import {DashboardRoutingModule} from './dashboard-routing.modules';
 import {ChatsModule} from '../chats/chats.module';
 import {SettingsModule} from '../settings/settings.module';
+import {StatisticsModule} from "../statistics/statistics.module";
 
 @NgModule({
   imports: [
     CommonModule,
     DashboardRoutingModule,
     ChatsModule,
-    SettingsModule
+    SettingsModule,
+    StatisticsModule
   ],
   exports: [
     DashboardComponent
