@@ -21,6 +21,7 @@ export class UserService {
       .toPromise()
       .then(res => {
         this.currentUser.authenticate();
+        return res;
       });
   }
 
