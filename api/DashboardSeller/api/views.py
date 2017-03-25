@@ -54,10 +54,8 @@ class GetUser(APIView):
 
 class LoginPerform(APIView):
     def get(self, request):
-        # login = request.POST["login"]
-        # passwd = request.POST["password"]
-        login = "bad_drone"
-        passwd = "QsVr1#?5IP"
+        login = request.POST["login"]
+        passwd = request.POST["password"]
         password_sha = hashlib.sha256(passwd).digest()
         password = base64.urlsafe_b64encode(password_sha)
 
@@ -96,22 +94,43 @@ class GetAuctions(APIView):
 
 
 class ManageMessages(APIView):
-    # def get(self, request):
-    #     if 'auctionId' not in request.GET.keys() and 'targetUserId' not in request.GET.keys():
-    #         return Response(status=status.HTTP_400_BAD_REQUEST)
-    #
-    #     if 'auctionId' in request.GET.keys():
-    #         messages = Message.objects.filter(destOfferId=auction_id)
-    #     else:
-    #         messages = Message.objects.filter(destOfferId=auction_id)
-    #
-    #     if 'userId' in request.GET.keys():
-    #         user_id = request.GET['userId']
-    #         messages = messages.filter(originUserId=user_id)
-    #
-    #     serializer = MessageSerializer(messages, many=True)
-    #
-    #     return Response(serializer.data)
+    def get(self, request):
+        if 'userId' not in request.GET.keys():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        access_token = request.GET["accessToken"]
+        user_id = request.GET["userId"]
+        user = SellerUser.objects.get(UserId=user_id)
+        offers = Offer.objects.filter(owner=user)
+        response_data = []
+
+        for offer in offers:
+            offer_id = offer.offerId
+            messages = Message.objects.filter(offerId=offer_id)
+
+            users_ids = messages.values('originUserId').distinct()
+
+            for userDict in users_ids:
+                user_origin_id = userDict["originUserId"]
+                message = messages.filter(originUserId=user_origin_id).latest('date')
+                user_data = requests.get("https://api.natelefon.pl/v1/allegro/users/" + user_origin_id +
+                                         "?access_token=" + access_token)
+                client_name = json.loads(user_data.text)["login"]
+                offer_id = offer.offerId
+                offer_data = requests.get("https://api.natelefon.pl/v1/allegro/offers/" + offer_id +
+                                         "?access_token=" + access_token)
+                auction_name = json.loads(offer_data.text)["name"]
+
+                data = {
+                    'clientId': user_origin_id,
+                    'clientName': client_name,
+                    'auctionName': auction_name,
+                    'lastMsg': message.text,
+                    'wasRead': message.read
+                }
+                response_data.append(data)
+
+        return Response(response_data)
 
     def post(self, request):
         user_id = request.POST["originUserId"]
