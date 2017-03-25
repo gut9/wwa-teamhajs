@@ -10,6 +10,7 @@ import {QuestionsService} from './questions.service';
 import {ConversationsService} from './conversations.service';
 import {ChatMessagesResolver} from '../chats/chat-messages.resolver';
 import {MessagesService} from './messages.service';
+import {ChartResolver} from "../statistics/chart.resorver";
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import {MessagesService} from './messages.service';
     QuestionsService,
     ConversationsService,
     ChatMessagesResolver,
-    MessagesService
+    MessagesService,
+    ChartResolver
   ],
   declarations: []
 })

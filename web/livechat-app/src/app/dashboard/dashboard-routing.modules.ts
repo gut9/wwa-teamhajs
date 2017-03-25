@@ -3,6 +3,7 @@ import {DashboardComponent} from './dashboard.component';
 import {NgModule} from '@angular/core';
 import {SettingsComponent} from "../settings/settings.component";
 import {StatisticsComponent} from "../statistics/statistics.component";
+import {ChartResolver} from "../statistics/chart.resorver";
 
 const dashboardRoutes: Routes = [
   {
@@ -19,7 +20,8 @@ const dashboardRoutes: Routes = [
       },
       {
         path: 'statistics',
-        component: StatisticsComponent
+        component: StatisticsComponent,
+        resolve: {statistics: ChartResolver}
       }
     ]
   }

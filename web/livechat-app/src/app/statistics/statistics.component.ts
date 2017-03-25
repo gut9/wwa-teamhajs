@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Color} from "ng2-charts";
 import {StatisticsService} from "../services/statistics.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-statistics',
@@ -25,11 +26,11 @@ export class StatisticsComponent implements OnInit {
   }];
   public barChartData: any[] = [];
 
-  constructor(private statisticsService: StatisticsService) {
+  constructor(private statisticsService: StatisticsService, private route: ActivatedRoute,) {
   }
 
   ngOnInit() {
-    // this.getAuctions();
+    this.getAuctions();
     this.getHours();
     this.setLabel();
   }
@@ -42,16 +43,13 @@ export class StatisticsComponent implements OnInit {
   }
 
   getHours() {
-    this.statisticsService.getHourStatistics().then(res => {
-      this.hours = res;
-    });
+    this.hours = this.route.snapshot.data['statistics'];
     this.barChartData.push({data: this.hours, label: 'Ilość wiadomości'});
   }
 
   private getAuctions() {
     this.statisticsService.getStatistics().then(res => {
-      console.log(res);
-      // auctions.push(res);
+      this.auctions.push(res);
     });
   }
 }

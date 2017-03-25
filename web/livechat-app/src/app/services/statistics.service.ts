@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import {CookieService} from 'angular2-cookie/core';
+import {Observable} from "rxjs";
 
 @Injectable()
 export class StatisticsService {
@@ -16,10 +17,9 @@ export class StatisticsService {
       .toPromise()
   }
 
-  getHourStatistics(): Promise<any> {
+  getHourStatistics(): Observable<any> {
     return this.http.get(`${this.HOST}api/hourStats?userId=34873768`)
       .map(r => r.json())
-      .toPromise()
   }
 
 }
