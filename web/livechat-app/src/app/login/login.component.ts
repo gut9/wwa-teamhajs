@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../services/user.service';
-import {CookieService, cookieServiceFactory} from "angular2-cookie/core";
+import {CookieService} from 'angular2-cookie/core';
 
 @Component({
   selector: 'app-login',
