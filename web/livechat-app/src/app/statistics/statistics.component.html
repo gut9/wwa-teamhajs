@@ -1,3 +1,45 @@
-<p>
-  statistics works!
-</p>
+<div class="container">
+  <div class="container__header container-header">
+    <span class="glyphicon glyphicon-equalizer"></span>
+    <p class="container-header__title">STATYSTYKI</p>
+  </div>
+  <br>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Aukcja</th>
+      <th>Ilość wyświetleń</th>
+      <th>Ilość wiadomości</th>
+      <th>%</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor='let value of data; let i = index'>
+      <th scope="row">{{i+1}}</th>
+      <td>{{value.auction}}</td>
+      <td>{{value.views}}</td>
+      <td>{{value.messages}}</td>
+      <td>{{value.views/value.messages}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <div>
+    <div style="display: block">
+      <canvas baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              [colors]="barBorderColor"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+    </div>
+  </div>
+
+</div>
