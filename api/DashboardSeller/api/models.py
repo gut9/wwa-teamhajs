@@ -117,7 +117,7 @@ class Message(models.Model):
 
     def save(self, **kwargs):
         super(Message, self).save()
-        Group("%s" % "1").send({'text': JSONRenderer().render({'data': {'clientId': self.clientId, 'message': self.message}})})
+        Group("%s" % self.originUserId).send({'text': JSONRenderer().render({'data': {'clientId': self.originUserId, 'message': self.text}})})
 
 
 class TestMessage(models.Model):
