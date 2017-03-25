@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="faq__elements">
-    <div class="faq__elements--element faq-element" *ngFor="let faqElement of faq">
+    <div class="faq__elements--element faq-element" *ngFor="let faqElement of faq" (click)="copyAnswer(faqElement)" >
       <div class="faq-element__question">{{faqElement.question}}</div>
       <div class="faq-element__answer">{{faqElement.answer}}</div>
     </div>

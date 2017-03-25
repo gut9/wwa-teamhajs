@@ -8,7 +8,7 @@ export class WebsocketService {
   private webSocket: Subject<any>;
 
   constructor() {
-    this.ws = new $WebSocket("ws://172.18.199.167:8000/api");
+    this.ws = new $WebSocket("ws://172.18.199.167:8000/api/34873768");
     this.webSocket = this.ws.getDataStream();
     this.webSocket.subscribe(
       res => {
@@ -22,6 +22,9 @@ export class WebsocketService {
         console.log('Completed');
       }
     );
+    this.ws.send4Promise({userId: '34873768'})
+      .then(res => console.log('udalo sie'))
+      .catch(err => console.log(err));
   }
 
   subject(): Subject<any> {

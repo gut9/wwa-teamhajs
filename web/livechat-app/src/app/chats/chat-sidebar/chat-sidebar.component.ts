@@ -23,11 +23,12 @@ export class ChatSidebarComponent implements OnInit {
         this.chatHeaders[0].selected = true;
         this.router.navigate([this.chatHeaders[0].clientId], {relativeTo: this.route});
       });
-    // this.websocketService.subject().subscribe(
-    //   res => {
-    //     let msg = JSON.parse(res.data);
-    //   }
-    // );
+    this.websocketService.subject().subscribe(
+      res => {
+        let msg = JSON.parse(res.data);
+        console.log(msg);
+      }
+    );
   }
 
   ngOnInit() {

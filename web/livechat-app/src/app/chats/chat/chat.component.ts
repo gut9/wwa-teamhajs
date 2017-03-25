@@ -17,10 +17,10 @@ export class ChatComponent implements OnInit {
     {text: 'Wyjątkowo sprawny', isClient: false},
   ];
   faq = [
-    {question : 'Jaki jest zapłon?', answer : 'Super zapłon, pozdrawiam.'},
-    {question : 'Czy samochód był bity?', answer : 'Super zapłon, pozdrawiam.'},
-    {question : 'Jakie to jest rocznik?', answer : '2000 rocznik kierowniku.'},
-    {question : 'Którym jest Pan właścicielem?', answer : 'Drugim.'}
+    {question: 'Jaki jest zapłon?', answer: 'Super zapłon, pozdrawiam.'},
+    {question: 'Czy samochód był bity?', answer: 'Super zapłon, pozdrawiam.'},
+    {question: 'Jakie to jest rocznik?', answer: '2000 rocznik kierowniku.'},
+    {question: 'Którym jest Pan właścicielem?', answer: 'Drugim.'}
   ];
   messageToSend = '';
   isFaqTurnedOn = false;
@@ -48,6 +48,10 @@ export class ChatComponent implements OnInit {
 
   closeFaq() {
     this.isFaqTurnedOn = false;
+  }
+
+  copyAnswer(faqElement) {
+    this.messages.push({text: faqElement.answer, isClient: false});
   }
 
 }
