@@ -4,7 +4,8 @@
          [ngClass]="{'chat-conversation__message--from-client' : message.isClient}">
       <div class="conversation-message__text"
            [ngClass]="{'conversation-message__text--from-client' : message.isClient}">{{message.text}}
-        <div class="conversation-message__plus glyphicon glyphicon-plus" *ngIf="message.isClient"></div>
+        <div class="conversation-message__plus glyphicon glyphicon-plus" *ngIf="message.isClient"
+             (click)="openEditAnswer(message.text)"></div>
       </div>
     </div>
   </div>
@@ -29,4 +30,20 @@
       <div class="faq-element__answer">{{faqElement.answer}}</div>
     </div>
   </div>
+</div>
+
+<div class="faq" *ngIf="isEditAnswerTurnedOn">
+  <div class="faq__header faq-header">
+    <div class="faq-header__remove glyphicon glyphicon-remove" (click)="closeEditAnswer()"></div>
+    <div class="faq-header__title">
+      Dodaj odpowiedź na pytanie
+    </div>
+  </div>
+  <div class="faq-question">
+    <div class="faq__question--element faq-question">
+      <div class="faq-question__question">{{questionToEdit}}</div>
+      <textarea cols="40" class="faq-element__answer" [(ngModel)]="answer"></textarea>
+    </div>
+  </div>
+  <button class="btn btn-allegro" (click)="saveQuestion()">Dodaj</button>
 </div>

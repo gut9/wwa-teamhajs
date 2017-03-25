@@ -7,6 +7,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {WebsocketService} from './websocket.service';
 import {StatisticsService} from "./statistics.service";
 import {CookieService} from "angular2-cookie/core";
+import {QuestionsService} from "./questions.service";
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import {CookieService} from "angular2-cookie/core";
     WebsocketService,
     SettingService,
     StatisticsService,
-    CookieService
+    CookieService,
+    QuestionsService
   ],
   declarations: []
 })

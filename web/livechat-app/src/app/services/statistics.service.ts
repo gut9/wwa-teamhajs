@@ -16,7 +16,6 @@ export class StatisticsService {
       .toPromise()
   }
 
-  // mock userId: 34873768
   getHourStatistics(): Promise<any> {
     return this.http.get(this.HOST + 'api/hourStats?userId=' + this.cookieService.get('userId'))
       .map(r => r.json())
