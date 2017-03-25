@@ -54,8 +54,10 @@ class GetUser(APIView):
 
 class LoginPerform(APIView):
     def get(self, request):
-        login = request.POST["login"]
-        passwd = request.POST["password"]
+        # login = request.POST["login"]
+        # passwd = request.POST["password"]
+        login = "bad_drone"
+        passwd = "QsVr1#?5IP"
         password_sha = hashlib.sha256(passwd).digest()
         password = base64.urlsafe_b64encode(password_sha)
 
@@ -147,3 +149,22 @@ class HourStatisticsGetter(APIView):
                 messages_counter += 1
 
         return Response(stats)
+
+
+class GetVisitStatistics(APIView):
+    def get(self, request):
+        if 'offerId' not in request.GET.keys():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        access_token = request.GET['accessToken']
+        offer_id = request.GET['offerId']
+        messages = Message.objects.filter(offerId=offer_id)
+        messages_counter = 0
+        for _ in messages:
+            messages_counter += 1
+
+        response_offer_data = requests.get("https://api.natelefon.pl/v1/allegro/offers/" + offer_id + "?access_token=" + access_token)
+        views_counter = json.loads(response_offer_data.text)["views"]
+
+        response_data = {'views': views_counter, 'msgCount': messages_counter}
+        return Response(response_data)
