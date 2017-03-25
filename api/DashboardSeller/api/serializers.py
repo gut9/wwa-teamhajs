@@ -18,17 +18,16 @@ class SellerRatingSerializer(serializers.ModelSerializer):
         fields = ('pk', 'count', 'averages_set')
 
 
-class FeedbackSerializer(serializers.Serializer):
-
+class FeedbackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Feedbacks
-        fields = ('all', 'positives', 'neutrals', 'negatives')
+        fields = ('all', 'positive', 'neutral', 'negative')
 
 
 class SellerUserSerializer(serializers.ModelSerializer):
     sellerRatings = SellerRatingSerializer('sellerRatings', many=False)
-    feedbacks = FeedbackSerializer('feedbacks', many=True)
+    feedbacks = FeedbackSerializer('feedbacks', many=False)
 
     class Meta:
         model = SellerUser
