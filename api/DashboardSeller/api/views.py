@@ -20,6 +20,8 @@ from api.models import Offer
 
 from api.serializers import MessageSerializer
 
+from api.serializers import OfferSerializer
+
 
 @channel_session_user_from_http
 def ws_connect(message):
@@ -79,7 +81,15 @@ class LoginPerform(APIView):
 
 class GetAuctions(APIView):
     def get(self, request):
-        access_token = request.GET["access_token"]
+        if 'userId' not in request.GET.keys():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        user_id = request.GET['userId']
+        user = SellerUser.objects.get(UserId=user_id)
+        offers = Offer.objects.filter(owner=user)
+
+        serialize = OfferSerializer(offers, many=True)
+        return Response(serialize.data)
 
 
 class ManageMessages(APIView):
@@ -133,4 +143,3 @@ class HourStatisticsGetter(APIView):
             stats[i] /= messages_counter
 
         return Response(stats)
-

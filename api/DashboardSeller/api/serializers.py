@@ -37,16 +37,19 @@ class SellerUserSerializer(serializers.ModelSerializer):
 
 
 class OfferSerializer(serializers.ModelSerializer):
-    owner = SellerUserSerializer('sellerUser', many=False)
+    # owner nie dziala
+    # owner = SellerUserSerializer('sellerUser', many=False)
+
 
     class Meta:
         model = Offer
-        fields = {'offerId', 'name', 'buyNow', 'auction', 'pricesBid', 'pricesBuyNow', 'standardAllegro', 'bidsCount',
-                  'category', 'note', 'watchersCount', 'withoutFinishDate', }
+        fields = ['offerId', 'name', 'buyNow', 'auction', 'pricesBid', 'pricesBuyNow', 'standardAllegro', 'bidsCount',
+                  'category', 'note', 'watchersCount', 'withoutFinishDate' ]
+
 
 
 class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = {'text', 'date', 'read'}
+        fields = ['text', 'date', 'read']
