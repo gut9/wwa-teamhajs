@@ -54,6 +54,7 @@ export class ChatComponent implements OnInit {
     this.isFaqTurnedOn = false;
   }
 
+<<<<<<< HEAD
   openEditAnswer(question: string) {
     this.questionToEdit = question;
     this.isEditAnswerTurnedOn = true;
@@ -67,4 +68,10 @@ export class ChatComponent implements OnInit {
     this.questionService.saveQuestion(this.questionToEdit, this.answer)
       .then(() => this.closeEditAnswer());
   }
+=======
+  copyAnswer(faqElement) {
+    this.messages.push({text: faqElement.answer, isClient: false});
+  }
+
+>>>>>>> 5eb84feeaaa5d9b98f35d3dd2759da536339ba39
 }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as _ from 'lodash';
 import {WebsocketService} from '../../services/websocket.service';
+import {ConversationsService} from '../../services/conversations.service';
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -10,59 +11,24 @@ import {WebsocketService} from '../../services/websocket.service';
 })
 export class ChatSidebarComponent implements OnInit {
 
-  chatHeaders = [
-    {
-      id: 1,
-      login: 'janek12',
-      auctionName: 'Passat w gazie',
-      lastMessage: 'Dzień dobry, chciałbym zadać pytanie dotyczące spalania',
-      isRead: true,
-      selected: true
-    },
-    {
-      id: 2,
-      login: 'janek12',
-      auctionName: 'Passat w gazie',
-      lastMessage: 'Dzień dobry, chciałbym zadać pytanie dotyczące spalania',
-      isRead: false,
-      selected: false
-    },
-    {
-      id: 3,
-      login: 'janek12',
-      auctionName: 'Passat w gazie',
-      lastMessage: 'Dzień dobry, chciałbym zadać pytanie dotyczące spalania',
-      isRead: true,
-      selected: false
-    },
-    {
-      id: 4,
-      login: 'janek12',
-      auctionName: 'Passat w gazie',
-      lastMessage: 'Dzień dobry, chciałbym zadać pytanie dotyczące spalania',
-      isRead: false,
-      selected: false
-    },
-    {
-      id: 5,
-      login: 'janek12',
-      auctionName: 'Passat w gazie',
-      lastMessage: 'Dzień dobry, chciałbym zadać pytanie dotyczące spalania',
-      isRead: true,
-      selected: false
-    }
-  ];
+  chatHeaders = [];
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private websocketService: WebsocketService) {
-    this.chatHeaders[0].selected = true;
-    this.router.navigate([this.chatHeaders[0].id], {relativeTo: this.route});
-    // this.websocketService.subject().subscribe(
-    //   res => {
-    //     let msg = JSON.parse(res.data);
-    //   }
-    // );
+              private websocketService: WebsocketService,
+              private conversationsService: ConversationsService) {
+    conversationsService.getConversations()
+      .then(res => {
+        this.chatHeaders = res;
+        this.chatHeaders[0].selected = true;
+        this.router.navigate([this.chatHeaders[0].clientId], {relativeTo: this.route});
+      });
+    this.websocketService.subject().subscribe(
+      res => {
+        let msg = JSON.parse(res.data);
+        console.log(msg);
+      }
+    );
   }
 
   ngOnInit() {
@@ -70,16 +36,16 @@ export class ChatSidebarComponent implements OnInit {
 
   openChat(chatId) {
     _.find(this.chatHeaders, ['selected', true]).selected = false;
-    _.find(this.chatHeaders, ['id', chatId]).selected = true;
+    _.find(this.chatHeaders, ['clientId', chatId]).selected = true;
     this.router.navigate([chatId], {relativeTo: this.route});
   }
 
   isSelected(chatId) {
-    return _.find(this.chatHeaders, ['id', chatId]).selected;
+    return _.find(this.chatHeaders, ['clientId', chatId]).selected;
   }
 
-  isRead(chatId) {
-    return _.find(this.chatHeaders, ['id', chatId]).isRead;
+  wasRead(chatId) {
+    return _.find(this.chatHeaders, ['clientId', chatId]).wasRead;
   }
 
 }

@@ -7,7 +7,11 @@ import {BrowserModule} from '@angular/platform-browser';
 import {WebsocketService} from './websocket.service';
 import {StatisticsService} from "./statistics.service";
 import {CookieService} from "angular2-cookie/core";
+<<<<<<< HEAD
 import {QuestionsService} from "./questions.service";
+=======
+import {ConversationsService} from './conversations.service';
+>>>>>>> 5eb84feeaaa5d9b98f35d3dd2759da536339ba39
 
 @NgModule({
   imports: [
@@ -21,7 +25,11 @@ import {QuestionsService} from "./questions.service";
     SettingService,
     StatisticsService,
     CookieService,
+<<<<<<< HEAD
     QuestionsService
+=======
+    ConversationsService
+>>>>>>> 5eb84feeaaa5d9b98f35d3dd2759da536339ba39
   ],
   declarations: []
 })

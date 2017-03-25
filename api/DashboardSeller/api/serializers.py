@@ -43,12 +43,11 @@ class OfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
         fields = ['offerId', 'name', 'buyNow', 'auction', 'pricesBid', 'pricesBuyNow', 'standardAllegro', 'bidsCount',
-                  'category', 'note', 'watchersCount', 'withoutFinishDate' ]
-
+                  'category', 'note', 'watchersCount', 'withoutFinishDate']
 
 
 class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ['text', 'date', 'read']
+        fields = ['authorId', 'clientId', 'offerId', 'text', 'date', 'read']
