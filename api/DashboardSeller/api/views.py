@@ -254,8 +254,9 @@ class GetVisitStatistics(APIView):
 
             response_offer_data = requests.get(
                 "https://api.natelefon.pl/v1/allegro/offers/" + offer_id + "?access_token=" + access_token)
+            title = json.loads(response_offer_data.text)["name"]
             views_counter = json.loads(response_offer_data.text)["views"]
-            data = {'views': views_counter, 'msgCount': messages_counter}
+            data = {'title': title, 'views': views_counter, 'msgCount': messages_counter}
             views_data.append(data)
 
         return Response(views_data)
