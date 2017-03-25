@@ -1,7 +1,11 @@
+from channels import Group
 from django.db import models
 
 
 # Create your models here.
+from rest_framework.renderers import JSONRenderer
+
+
 class SellerRating(models.Model):
     count = models.IntegerField()
 
@@ -12,7 +16,7 @@ class SellerRating(models.Model):
 class Averages(models.Model):
     title = models.TextField()
     rating = models.FloatField()
-    sellerRating = models.ForeignKey(SellerRating)
+    sellerRating = models.ForeignKey(SellerRating, null=True, blank=True)
 
     def __unicode__(self):
         return str(self.title)
@@ -55,7 +59,7 @@ class NegativeFeedbacks(models.Model):
 
 
 class Feedbacks(models.Model):
-    all = models.IntegerField()
+    all = models.IntegerField(null=True, blank=True)
     positive = models.ForeignKey(PositiveFeedbacks)
     neutral = models.ForeignKey(NeutralFeedbacks)
     negative = models.ForeignKey(NegativeFeedbacks)
@@ -66,7 +70,7 @@ class Feedbacks(models.Model):
 
 class SellerUser(models.Model):
     UserId = models.TextField()
-    isActive = models.BooleanField()
+    isActive = models.BooleanField(default=False)
     login = models.TextField()
     country = models.IntegerField()
     rating = models.IntegerField()
@@ -110,3 +114,24 @@ class Message(models.Model):
 
     def __unicode__(self):
         return str(self.originUserId)
+
+    def save(self, **kwargs):
+        super(Message, self).save()
+        Group("%s" % "1").send({'text': JSONRenderer().render({'data': {'clientId': self.clientId, 'message': self.message}})})
+
+
+class TestMessage(models.Model):
+    sellerId = models.TextField()
+    clientId = models.TextField()
+    message = models.TextField()
+
+    def save(self, **kwargs):
+        super(TestMessage, self).save()
+        Group("%s" % "1").send({'text': JSONRenderer().render({'data': {'clientId': self.clientId, 'message': self.message}})})
+
+
+class FrequentlyAskedQuestions(models.Model):
+    user = models.ForeignKey(SellerUser)
+    offer = models.ForeignKey(Offer)
+    question = models.TextField()
+    answer = models.TextField()

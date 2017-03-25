@@ -6,7 +6,10 @@ import json
 import urllib
 
 import requests
-from api.models import SellerUser
+from rest_framework.renderers import JSONRenderer
+
+from api.models import SellerUser, NegativeFeedbacks, Feedbacks, Averages, SellerRating, NeutralFeedbacks, \
+    PositiveFeedbacks
 from api.serializers import SellerUserSerializer
 from channels import Group
 from channels.auth import channel_session_user_from_http
@@ -26,13 +29,14 @@ from api.serializers import OfferSerializer
 
 @channel_session_user_from_http
 def ws_connect(message):
-    Group("%s" % message.user).add(message.reply_channel)
+    Group("%s" % "1").add(message.reply_channel)
     message.reply_channel.send({'accept': True})
 
 
 @channel_session
 def ws_receive(message):
-    print message
+    # serializer = MessageSerializer(message, many=False)
+    Group("%s" % "1").send({'text': JSONRenderer().render({'data': "dupa"})})
 
 
 @channel_session
@@ -42,9 +46,50 @@ def ws_disconnect(message):
 
 class GetUser(APIView):
     def get(self, request):
-        user = SellerUser.objects.get()
-        serializer = SellerUserSerializer(user, many=False)
-        return Response(serializer.data)
+        user_id = "3836789"
+        auth_response = requests.get('https://ssl.allegro.pl/auth/oauth/token?grant_type=client_credentials',
+                                     auth=('a41f5b2a-8e87-4b8b-b6fe-74cc763720d7',
+                                           'bxbb2gFqCP1aM3kNPeptAWQMGz9gosbe9JCO1sqlp0BhY9G4UufpkXgsSFQYE545'))
+
+        access_token = json.loads(auth_response.text)["access_token"]
+        user_data = {'access_token': access_token}
+        user_result = requests.get('https://api.natelefon.pl/v1/allegro/users/' + user_id, data=user_data)
+
+        user = SellerUser.objects.filter(UserId=user_id)
+        if not user:
+            response = json.loads(user_result.text)
+            negative_feedback = response['feedbacks']['negative']
+            negative_feedbacks = NegativeFeedbacks(all=negative_feedback['all'], lastMonth=negative_feedback['lastMonth'], percentage=negative_feedback['percent'], asBuyer=negative_feedback['asBuyer'], asSeller=negative_feedback['asSeller'], lastWeek=negative_feedback['lastWeek'])
+            negative_feedbacks.save()
+
+            neutral_feedback = response['feedbacks']['neutral']
+            neutral_feedbacks = NeutralFeedbacks(all=neutral_feedback['all'], lastMonth=neutral_feedback['lastMonth'], percentage=neutral_feedback['percent'], asBuyer=neutral_feedback['asBuyer'], asSeller=neutral_feedback['asSeller'], lastWeek=neutral_feedback['lastWeek'])
+            neutral_feedbacks.save()
+
+            positive_feedback = response['feedbacks']['positive']
+            positive_feedbacks = PositiveFeedbacks(all=positive_feedback['all'], lastMonth=positive_feedback['lastMonth'], percentage=positive_feedback['percent'], asBuyer=positive_feedback['asBuyer'], asSeller=positive_feedback['asSeller'], lastWeek=positive_feedback['lastWeek'])
+            positive_feedbacks.save()
+
+            feedbacks = Feedbacks(all=response['feedbacks']['all'], negative=negative_feedbacks, neutral=neutral_feedbacks, positive=positive_feedbacks)
+            feedbacks.save()
+
+            seller_ratings = SellerRating(count=response['sellerRatings']['count'])
+            seller_ratings.save()
+
+            averages = response['sellerRatings']['averages']
+            for average in averages:
+                single_average = Averages(rating=average['rating'], title=average['title'], sellerRating=seller_ratings)
+                seller_ratings.averages_set.add(single_average)
+            seller_ratings.save()
+            new_seller_user = SellerUser(allegroStandard=response['allegroStandard'], company=response['company'],
+                                         country=response['country'], feedbacks=feedbacks, login=response['login'],
+                                         rating=response['rating'], ratingIcon=response['ratingIcon'], sellerRatings=seller_ratings, UserId=user_id)
+            new_seller_user.save()
+            serializer = SellerUserSerializer(new_seller_user, many=False)
+            return Response(serializer.data)
+        else:
+            serializer = SellerUserSerializer(user.get(), many=False)
+            return Response(serializer.data)
 
     def post(self, request):
         user = SellerUser.objects.get()
@@ -53,9 +98,10 @@ class GetUser(APIView):
 
 
 class LoginPerform(APIView):
-    def get(self, request):
-        login = request.POST["login"]
-        passwd = request.POST["password"]
+    def post(self, request):
+        json_request = json.loads(request.body)
+        login = json_request['login']
+        passwd = json_request['password']
         password_sha = hashlib.sha256(passwd).digest()
         password = base64.urlsafe_b64encode(password_sha)
 
@@ -77,7 +123,7 @@ class LoginPerform(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             response_data = {'access_token': access_token, 'userId': login}
-            return Response(response_data, status=status.HTTP_200_OK)
+            return Response(response_data)
 
 
 class GetAuctions(APIView):
@@ -196,3 +242,11 @@ class GetVisitStatistics(APIView):
             views_data.append(data)
 
         return Response(views_data)
+
+
+class GetFrequentlyAskedQuestions(APIView):
+
+    def post(self, request):
+        offer_id = json.loads(request.body)['offerId']
+        offer = Offer.objects.get(offerId=offer_id)
+        return Response(offer.frequentlyaskedquestions_set.all())
