@@ -66,6 +66,7 @@ class Feedbacks(models.Model):
 
 class SellerUser(models.Model):
     UserId = models.TextField()
+    isActive = models.BooleanField()
     login = models.TextField()
     country = models.IntegerField()
     rating = models.IntegerField()
@@ -100,8 +101,8 @@ class Offer(models.Model):
 
 
 class Message(models.Model):
-    fromUser = models.ForeignKey(SellerUser)
-    destOffer = models.ForeignKey(Offer)
+    originUserId = models.TextField()
+    destOfferId = models.TextField()
     text = models.TextField()
     date = models.DateField()
     read = models.BooleanField()
