@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
-from api.models import SellerUser, SellerRating, Averages
+from api.models import SellerUser, SellerRating, Averages, Feedbacks
 
 
 class AveragesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Averages
-        fields = ('title', 'rating')
+        fields = ('pk', 'title', 'rating')
 
 
 class SellerRatingSerializer(serializers.ModelSerializer):
@@ -15,11 +15,20 @@ class SellerRatingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SellerRating
-        fields = ('count', 'averages_set')
+        fields = ('pk', 'count', 'averages_set')
+
+
+class FeedbackSerializer(serializers.Serializer):
+
+    class Meta:
+        model = Feedbacks
+        fields = ('all', 'positives', 'neutrals', 'negatives')
 
 
 class SellerUserSerializer(serializers.ModelSerializer):
     sellerRatings = SellerRatingSerializer('sellerRatings', many=False)
+    feedbacks = FeedbackSerializer('feedbacks', many=True)
+
     class Meta:
         model = SellerUser
         fields = ('UserId', 'login', 'country', 'rating', 'ratingIcon', 'company', 'allegroStandard',

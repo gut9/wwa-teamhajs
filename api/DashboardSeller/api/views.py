@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 import base64
 import hashlib
+
 import json
 
 import requests
@@ -46,7 +48,7 @@ class LoginPerform(APIView):
         login = request.POST["login"]
         passwd = request.POST["password"]
         password_sha = hashlib.sha256(passwd)
-        password = base64.b64encode(password_sha)
+        password = base64.b64encode(str(password_sha))
 
         # get token for user
         auth_response = requests.get('https://ssl.allegro.pl/auth/oauth/token?grant_type=client_credentials',
@@ -62,6 +64,8 @@ class LoginPerform(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
         elif login_result.status_code == 403:
             return Response(status=status.HTTP_403_FORBIDDEN)
+        elif login_result.status_code == 400:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             response_data = {'access_token': access_token, 'userId': login_result}
             return Response(response_data, status=status.HTTP_200_OK)
