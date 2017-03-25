@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^messagesToRoom/', views.GetMessagesForRoom.as_view(), name='messagesToRoom'),
     url(r'^hourStats/', views.HourStatisticsGetter.as_view(), name='hourStats'),
     url(r'^auctions/', views.GetAuctions.as_view(), name='auctions'),
+    url(r'^auctionDetails/', views.AuctionDetails.as_view(), name='auctions'),
     url(r'^getStats/', views.GetVisitStatistics.as_view(), name='auctions'),
     url(r'^getFrequentlyAskedQuestions/', views.GetFrequentlyAskedQuestions.as_view(), name='frequentlyAskedQuestions')
 ]

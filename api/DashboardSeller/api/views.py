@@ -6,6 +6,7 @@ import json
 import urllib
 
 import requests
+from django.views import View
 from rest_framework.renderers import JSONRenderer
 
 from api.models import SellerUser, NegativeFeedbacks, Feedbacks, Averages, SellerRating, NeutralFeedbacks, \
@@ -170,6 +171,7 @@ class ManageMessages(APIView):
                 data = {
                     'clientId': user_origin_id,
                     'clientName': client_name,
+                    'auctionId': offer_id,
                     'auctionName': auction_name,
                     'lastMsg': message.text,
                     'wasRead': message.read
@@ -199,7 +201,7 @@ class GetMessagesForRoom(APIView):
         messages = Message.objects.filter(offerId=auction_id).filter(clientId=client_id)
         serializer = MessageSerializer(messages, many=True)
 
-        return Response(serializer)
+        return Response(serializer.data)
 
 
 class HourStatisticsGetter(APIView):
@@ -263,3 +265,25 @@ class GetFrequentlyAskedQuestions(APIView):
         offer_id = json.loads(request.body)['offerId']
         offer = Offer.objects.get(offerId=offer_id)
         return Response(offer.frequentlyaskedquestions_set.all())
+
+
+class AuctionDetails(APIView):
+
+    def get(self, request):
+        if 'auctionId' not in request.GET.keys() or 'accessToken' not in request.GET.keys():
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        access_token = request.GET["accessToken"]
+        auction_id = request.GET["auctionId"]
+        offer_data = requests.get("https://api.natelefon.pl/v1/allegro/offers/" + auction_id +
+                                  "?access_token=" + access_token)
+        json_auction_data = json.loads(offer_data.text)
+
+        response_data = {
+            'title': json_auction_data["name"],
+            'auction': json_auction_data["auction"],
+            'views': json_auction_data["views"],
+            'secondsLeft': json_auction_data["secondsLeft"]
+        }
+
+        return Response(response_data)
