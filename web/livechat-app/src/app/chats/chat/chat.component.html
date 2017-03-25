@@ -2,10 +2,13 @@
   <div class="chat__conversation chat-conversation">
     <div *ngFor="let message of messages" class="chat-conversation__message conversation-message"
          [ngClass]="{'chat-conversation__message--from-client' : message.isClient}">
-      <div class="conversation-message__text">{{message.text}}</div>
+      <div class="conversation-message__text"
+           [ngClass]="{'conversation-message__text--from-client' : message.isClient}">{{message.text}}</div>
     </div>
   </div>
   <div class="chat__actions chat-actions">
-    <input class="chat-actions__input form-control" placeholder="Wpisz wiadomość...">
+    <input type="text" name="messageToSend" class="chat-actions__input form-control" placeholder="Wpisz wiadomość..."
+           (keypress)="onKeyPressed($event)"
+           [(ngModel)]="messageToSend">
   </div>
 </div>

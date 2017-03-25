@@ -16,11 +16,23 @@ export class ChatComponent implements OnInit {
     {text: 'A jaki ma silnik?', isClient: true},
     {text: 'Wyjątkowo sprawny', isClient: false},
   ];
+  messageToSend = '';
 
   constructor() {
   }
 
   ngOnInit() {
+  }
+
+  onKeyPressed($event) {
+    if ($event.key === 'Enter') {
+      this.submitMessage();
+    }
+  }
+
+  private submitMessage() {
+    this.messages.push({text: this.messageToSend, isClient: false});
+    this.messageToSend = '';
   }
 
 }

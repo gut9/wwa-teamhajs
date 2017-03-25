@@ -1,3 +1,5 @@
+@import "../../../styles";
+
 .sidebar {
 
   & &__header {
@@ -14,9 +16,10 @@
   }
 
   & .list-group-item--selected {
-    background-color: #d0d0d0;
+    background-color: @accent-color;
+    color: white;
   }
   & .list-group-item--selected:hover {
-    background-color: darken(#d0d0d0, 10%);
+    background-color: darken(@accent-color, 5%);
   }
 }

@@ -1,3 +1,5 @@
+@import "../../../styles";
+
 .chat {
   display: flex;
   justify-content: flex-end;
@@ -11,6 +13,7 @@
 }
 
 .chat-actions {
+  margin-top: 30px;
   & &__input {
   }
 }
@@ -18,10 +21,26 @@
 .chat-conversation {
 
   & &__message {
-    text-align: right;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+
   }
 
   & &__message--from-client {
-    text-align: left;
+    flex-direction: row;
+  }
+}
+
+.conversation-message {
+  & &__text {
+    border-radius: 5px;
+    padding: 10px;
+    background-color: @border-color;
+  }
+
+  & &__text--from-client {
+    color: white;
+    background-color: @accent-color;
   }
 }
