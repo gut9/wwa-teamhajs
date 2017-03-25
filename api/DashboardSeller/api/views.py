@@ -54,10 +54,8 @@ class GetUser(APIView):
 
 class LoginPerform(APIView):
     def get(self, request):
-        # login = request.POST["login"]
-        # passwd = request.POST["password"]
-        login = "bad_drone"
-        passwd = "QsVr1#?5IP"
+        login = request.POST["login"]
+        passwd = request.POST["password"]
         password_sha = hashlib.sha256(passwd).digest()
         password = base64.urlsafe_b64encode(password_sha)
 
