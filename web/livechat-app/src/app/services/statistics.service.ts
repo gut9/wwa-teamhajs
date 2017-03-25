@@ -12,7 +12,7 @@ export class StatisticsService {
   private HOST = 'http://172.18.199.167:8000/';
 
   getStatistics(): Promise<any> {
-    return this.http.get(`${this.HOST}api/getStats?userId=34873768?accessToken=${this.cookieService.get('accessToken')}`)
+    return this.http.get(`${this.HOST}api/getStats/?userId=34873768&accessToken=` + this.cookieService.get('accessToken'))
       .map(r => r.json())
       .toPromise()
   }

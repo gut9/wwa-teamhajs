@@ -49,7 +49,7 @@ export class StatisticsComponent implements OnInit {
 
   private getAuctions() {
     this.statisticsService.getStatistics().then(res => {
-      this.auctions.push(res);
+      this.auctions = res;
     });
   }
 }
