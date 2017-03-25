@@ -4,11 +4,13 @@ import {ChatsComponent} from './chats.component';
 import { ChatComponent } from './chat/chat.component';
 import {ChatsRoutingModule} from './chats-routing.modules';
 import { ChatSidebarComponent } from './chat-sidebar/chat-sidebar.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
-    ChatsRoutingModule
+    ChatsRoutingModule,
+    FormsModule
   ],
   exports: [
     ChatsComponent

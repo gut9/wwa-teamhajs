@@ -1,0 +1,46 @@
+@import "../../../styles";
+
+.chat {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 100px;
+
+}
+
+.chat-actions {
+  margin-top: 30px;
+  & &__input {
+  }
+}
+
+.chat-conversation {
+
+  & &__message {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+
+  }
+
+  & &__message--from-client {
+    flex-direction: row;
+  }
+}
+
+.conversation-message {
+  & &__text {
+    border-radius: 5px;
+    padding: 10px;
+    background-color: @border-color;
+  }
+
+  & &__text--from-client {
+    color: white;
+    background-color: @accent-color;
+  }
+}
