@@ -19,7 +19,7 @@ export class ChatSidebarComponent implements OnInit {
               private conversationsService: ConversationsService) {
     conversationsService.getConversations()
       .then(res => {
-        this.chatHeaders = res;
+        this.chatHeaders = _.unionWith(res, (p1, p2) => p1.clientId === p2.clientId);
         this.chatHeaders[0].selected = true;
         this.router.navigate(['client', this.chatHeaders[0].clientId, 'auction', this.chatHeaders[0].auctionId], {relativeTo: this.route});
       });

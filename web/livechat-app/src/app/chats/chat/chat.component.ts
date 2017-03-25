@@ -35,12 +35,14 @@ export class ChatComponent implements OnInit {
               private route: ActivatedRoute,
               private questionService: QuestionsService) {
     this.messages = route.snapshot.data['conversation']
-      .map(message => {});
+      .map(message => {
+        return {text: message.text, isClient: message.authorId === this.route.snapshot.params['clientId'], date : message.date}
+      });
     this.webSocketService.subject().subscribe(res => {
       let response = JSON.parse(res.data).data;
-      if (this.route.snapshot.params['clientId'] === response.authorId) {
+      // if (this.route.snapshot.params['clientId'] === response.authorId) {
         this.messages.push({text: response.message, isClient: true});
-      }
+      // }
     })
   }
 
