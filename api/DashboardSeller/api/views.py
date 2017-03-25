@@ -1,3 +1,5 @@
+import base64
+import hashlib
 import json
 
 import requests
@@ -6,6 +8,7 @@ from api.serializers import SellerUserSerializer
 from channels import Group
 from channels.auth import channel_session_user_from_http
 from channels.sessions import channel_session
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -41,17 +44,24 @@ class GetUser(APIView):
 class LoginPerform(APIView):
     def post(self, request):
         login = request.POST["login"]
-        password = request.POST["password"]
+        passwd = request.POST["password"]
+        password_sha = hashlib.sha256(passwd)
+        password = base64.b64encode(password_sha)
 
         # get token for user
-        authResponse = requests.get('https://ssl.allegro.pl/auth/oauth/token?grant_type=client_credentials',
-                                    auth=('a41f5b2a-8e87-4b8b-b6fe-74cc763720d7',
-                                          'bxbb2gFqCP1aM3kNPeptAWQMGz9gosbe9JCO1sqlp0BhY9G4UufpkXgsSFQYE545'))
+        auth_response = requests.get('https://ssl.allegro.pl/auth/oauth/token?grant_type=client_credentials',
+                                     auth=('a41f5b2a-8e87-4b8b-b6fe-74cc763720d7',
+                                           'bxbb2gFqCP1aM3kNPeptAWQMGz9gosbe9JCO1sqlp0BhY9G4UufpkXgsSFQYE545'))
 
-        accessToken = json.loads(authResponse.text)["access_token"]
+        access_token = json.loads(auth_response.text)["access_token"]
 
-        loginData = {'access_token': accessToken, 'login': login, 'password': password}
-        loginResult = request.post('https://api.natelefon.pl/v1/allegro/login', loginData)
+        login_data = {'access_token': access_token, 'login': login, 'password': password}
+        login_result = requests.post('https://api.natelefon.pl/v1/allegro/login', data=login_data)
 
-        responseData = {'access_token': accessToken, 'userId': loginResult}
-        return Response(responseData)
+        if login_result.status_code == 401:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        elif login_result.status_code == 403:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        else:
+            response_data = {'access_token': access_token, 'userId': login_result}
+            return Response(response_data, status=status.HTTP_200_OK)
