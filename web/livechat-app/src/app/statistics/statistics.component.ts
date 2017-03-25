@@ -40,7 +40,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   public barChartOptions: any = {
-    scaleShowVerticalLines: false,
+    scaleShowVerticalLines: true,
     responsive: true
   };
   public barChartLabels: string[] = [];
@@ -48,8 +48,8 @@ export class StatisticsComponent implements OnInit {
   public barChartLegend: boolean = true;
 
   public barBorderColor: Array<Color> = [{
-    backgroundColor: 'green',
-    hoverBackgroundColor: 'purple'
+    backgroundColor: '#4CAF50',
+    hoverBackgroundColor: '#2E7D32'
   }];
 
   public barChartData: any[] = [];
