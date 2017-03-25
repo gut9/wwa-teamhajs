@@ -7,14 +7,14 @@
   <div class="chat-sidebar__chats chat-sidebar-chats">
     <div class="chat-sidebar-chats__element chat-header" *ngFor="let chatHeader of chatHeaders"
          [ngClass]="{
-         'chat-sidebar-chats__element--not-read':isRead(chatHeader.id),
-         'chat-sidebar-chats__element--selected':isSelected(chatHeader.id)
+         'chat-sidebar-chats__element--not-read':wasRead(chatHeader.clientId),
+         'chat-sidebar-chats__element--selected':isSelected(chatHeader.clientId)
          }"
 
-         (click)="openChat(chatHeader.id)">
-      <div class="chat-header__login">{{chatHeader.login}}</div>
+         (click)="openChat(chatHeader.clientId)">
+      <div class="chat-header__login">{{chatHeader.clientName}}</div>
       <div class="chat-header__auction">{{chatHeader.auctionName}}</div>
-      <div class="chat-header__lastMessage">{{chatHeader.lastMessage}}</div>
+      <div class="chat-header__lastMessage">{{chatHeader.lastMsg}}</div>
     </div>
   </div>
 
