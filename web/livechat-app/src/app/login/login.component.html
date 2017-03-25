@@ -18,9 +18,20 @@
         </div>
       </div>
       <br>
+
+
+
       <div class="row">
-        <button type="button" (click)="login()" class="col-md-12 btn btn-allegro">Zaloguj</button>
+        <div *ngIf="!error" class="col-md-12 error"></div>
+        <div *ngIf="error" class="col-md-12 error">
+          <strong>Oh ziomuś!</strong> Podałeś złe hasło lub login!
+        </div>
+        <button type="button" (click)="login()" class="col-md-12 btn btn-allegro">Zaloguj
+          <span *ngIf="!tryLogin" class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+          <span *ngIf="tryLogin" class="glyphicon glyphicon-repeat glyphicon-spin" aria-hidden="true"></span>
+        </button>
       </div>
+
     </form>
 
   </div>
