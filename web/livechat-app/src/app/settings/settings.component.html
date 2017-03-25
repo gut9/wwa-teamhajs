@@ -1,3 +1,22 @@
-<p>
-  settings works!
-</p>
+<div class="container">
+  <div class="container__header container-header">
+    <span class="glyphicon glyphicon-wrench"></span>
+    <p class="container-header__title">USTAWIENIE</p>
+  </div>
+  <br>
+
+  <div class="form-group container__content container-content row ">
+    <label for="invitationMessage" class="container-content__label col-xs-2 col-form-label">Wiadomość powitalna:</label>
+    <div class="col-xs-9">
+      <input class="form-control container-content__input" type="text" [value]="invitationMessage"
+             id="invitationMessage"
+             name="invitationMessage"
+             [formControl]="invitationMessageControl" placeholder="{{invitationMessage}}">
+    </div>
+    <div>
+      <span *ngIf="!saving" class="glyphicon glyphicon-ok container-content__icon"></span>
+      <span *ngIf="saving" class="glyphicon glyphicon-repeat glyphicon-spin container-content__icon"></span>
+    </div>
+  </div>
+
+</div>
