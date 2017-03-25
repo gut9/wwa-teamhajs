@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Color} from "ng2-charts";
+import {StatisticsService} from "../services/statistics.service";
 
 @Component({
   selector: 'app-statistics',
@@ -8,36 +9,8 @@ import {Color} from "ng2-charts";
 })
 export class StatisticsComponent implements OnInit {
 
-  data = [
-    {
-      auction: "Prosto z niemiec VW",
-      views: 1000,
-      messages: 200
-    },
-    {
-      auction: "Cos tam tam  VW",
-      views: 500,
-      messages: 10
-    },
-    {
-      auction: "Prosto prosto prosot",
-      views: 1000,
-      messages: 200
-    },
-    {
-      auction: "Prostasdo z niemiead c VW",
-      views: 11500,
-      messages: 359
-    },
-  ];
-
-  constructor() {
-  }
-
-  ngOnInit() {
-    this.getDataLabel();
-    this.getData();
-  }
+  hours = [];
+  auctions = [];
 
   public barChartOptions: any = {
     scaleShowVerticalLines: true,
@@ -46,36 +19,39 @@ export class StatisticsComponent implements OnInit {
   public barChartLabels: string[] = [];
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
-
   public barBorderColor: Array<Color> = [{
     backgroundColor: '#4CAF50',
     hoverBackgroundColor: '#2E7D32'
   }];
-
   public barChartData: any[] = [];
 
-  public chartClicked(e: any): void {
-    console.log(e);
+  constructor(private statisticsService: StatisticsService) {
   }
 
-  public chartHovered(e: any): void {
-    console.log(e);
+  ngOnInit() {
+    // this.getAuctions();
+    this.getHours();
+    this.setLabel();
   }
 
-  getDataLabel() {
+  setLabel() {
     for (let i = 0; i <= 24; i++) {
       let string = i + ":00";
       this.barChartLabels.push(string);
     }
   }
 
-  getData() {
-    let mockData = [];
-    for (let i = 0; i <= 24; i++) {
-      let a = Math.floor(Math.random() * (100 - 0 + 1)) + 0;
-      mockData.push(a);
-    }
-    this.barChartData.push({data: mockData, label: 'Ilość wiadomości'});
+  getHours() {
+    this.statisticsService.getHourStatistics().then(res => {
+      this.hours = res;
+    });
+    this.barChartData.push({data: this.hours, label: 'Ilość wiadomości'});
   }
 
+  private getAuctions() {
+    this.statisticsService.getStatistics().then(res => {
+      console.log(res);
+      // auctions.push(res);
+    });
+  }
 }

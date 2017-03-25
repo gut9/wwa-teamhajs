@@ -12,16 +12,16 @@
       <th>Aukcja</th>
       <th>Ilość wyświetleń</th>
       <th>Ilość wiadomości</th>
-      <th>%</th>
+      <th>Współczynnik</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor='let value of data; let i = index'>
+    <tr *ngFor='let auction of auctions; let i = index'>
       <th scope="row">{{i+1}}</th>
-      <td>{{value.auction}}</td>
-      <td>{{value.views}}</td>
-      <td>{{value.messages}}</td>
-      <td>{{value.views/value.messages}}</td>
+      <td>{{auction.title}}</td>
+      <td>{{auction.views}}</td>
+      <td>{{auction.messages}}</td>
+      <td>{{auction.views/auction.messages}}</td>
     </tr>
     </tbody>
   </table>

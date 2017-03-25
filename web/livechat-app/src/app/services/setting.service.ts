@@ -7,9 +7,7 @@ export class SettingService {
   constructor(private http: Http) {
   }
 
-  private HOST = 'http://172.18.199.167:8000/docs/';
-
-  // TODO: change end point !!
+  private HOST = 'http://172.18.199.167:8000/';
 
   saveInvitationMessage(message: string): Promise<any> {
     return this.http.post(this.HOST + '??', message)

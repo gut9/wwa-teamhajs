@@ -3,6 +3,8 @@ import {CommonModule} from '@angular/common';
 import {UserService} from "./user.service";
 import {CurrentUserService} from "./current-user.service";
 import {SettingService} from "./setting.service";
+import {StatisticsService} from "./statistics.service";
+import {CookieService} from "angular2-cookie/core";
 
 @NgModule({
   imports: [
@@ -11,7 +13,9 @@ import {SettingService} from "./setting.service";
   providers: [
     UserService,
     CurrentUserService,
-    SettingService
+    SettingService,
+    StatisticsService,
+    CookieService
   ],
   declarations: []
 })
