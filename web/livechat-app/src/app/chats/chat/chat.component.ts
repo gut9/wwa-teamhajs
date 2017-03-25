@@ -75,7 +75,7 @@ export class ChatComponent implements OnInit {
   }
 
   saveQuestion() {
-    this.questionService.saveQuestion(this.questionToEdit, this.answer)
+    this.questionService.saveQuestion(this.questionToEdit, this.answer, this.route.snapshot.params['auctionId'])
       .then(() => this.closeEditAnswer());
   }
 

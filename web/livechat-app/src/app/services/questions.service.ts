@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 
 @Injectable()
@@ -9,14 +9,14 @@ export class QuestionsService {
 
   private HOST = 'http://172.18.199.167:8000/';
 
-  // TODO: added URL
-
-  saveQuestion(question: string, answer: string): Promise<any> {
-    return this.http.post(this.HOST + '??', {
+  saveQuestion(question: string, answer: string, offerId: string): Promise<any> {
+    return this.http.post(`${this.HOST}api/getFrequentlyAskedQuestions/`, {
       question: question,
-      answer: answer
+      answer: answer,
+      offerId: offerId,
+      userId: '34873768'
     })
-      .map(r => r.json())
+      .map(r => r)
       .toPromise();
   }
 
