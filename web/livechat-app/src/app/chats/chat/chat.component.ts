@@ -16,7 +16,14 @@ export class ChatComponent implements OnInit {
     {text: 'A jaki ma silnik?', isClient: true},
     {text: 'Wyjątkowo sprawny', isClient: false},
   ];
+  faq = [
+    {question : 'Jaki jest zapłon?', answer : 'Super zapłon, pozdrawiam.'},
+    {question : 'Czy samochód był bity?', answer : 'Super zapłon, pozdrawiam.'},
+    {question : 'Jakie to jest rocznik?', answer : '2000 rocznik kierowniku.'},
+    {question : 'Którym jest Pan właścicielem?', answer : 'Drugim.'}
+  ];
   messageToSend = '';
+  isFaqTurnedOn = false;
 
   constructor() {
   }
@@ -33,6 +40,14 @@ export class ChatComponent implements OnInit {
   private submitMessage() {
     this.messages.push({text: this.messageToSend, isClient: false});
     this.messageToSend = '';
+  }
+
+  openFaq() {
+    this.isFaqTurnedOn = true;
+  }
+
+  closeFaq() {
+    this.isFaqTurnedOn = false;
   }
 
 }

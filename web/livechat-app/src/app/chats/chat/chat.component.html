@@ -3,12 +3,30 @@
     <div *ngFor="let message of messages" class="chat-conversation__message conversation-message"
          [ngClass]="{'chat-conversation__message--from-client' : message.isClient}">
       <div class="conversation-message__text"
-           [ngClass]="{'conversation-message__text--from-client' : message.isClient}">{{message.text}}</div>
+           [ngClass]="{'conversation-message__text--from-client' : message.isClient}">{{message.text}}
+        <div class="conversation-message__plus glyphicon glyphicon-plus" *ngIf="message.isClient"></div>
+      </div>
     </div>
   </div>
   <div class="chat__actions chat-actions">
     <input type="text" name="messageToSend" class="chat-actions__input form-control" placeholder="Wpisz wiadomość..."
            (keypress)="onKeyPressed($event)"
            [(ngModel)]="messageToSend">
+    <div class="chat-actions__faq glyphicon glyphicon-question-sign" (click)="openFaq()"></div>
+  </div>
+</div>
+<div class="faq" *ngIf="isFaqTurnedOn">
+  <div class="faq__header faq-header">
+    <div class="faq-header__remove glyphicon glyphicon-remove" (click)="closeFaq()"></div>
+    <div class="faq-header__title">
+      Najczęściej zadawane pytania
+      <!--<div>(kliknij aby wkleić odpowiedź)</div>-->
+    </div>
+  </div>
+  <div class="faq__elements">
+    <div class="faq__elements--element faq-element" *ngFor="let faqElement of faq">
+      <div class="faq-element__question">{{faqElement.question}}</div>
+      <div class="faq-element__answer">{{faqElement.answer}}</div>
+    </div>
   </div>
 </div>

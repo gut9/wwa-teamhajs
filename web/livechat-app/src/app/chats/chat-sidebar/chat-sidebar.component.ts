@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as _ from 'lodash';
+import {WebsocketService} from '../../services/websocket.service';
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -53,9 +54,15 @@ export class ChatSidebarComponent implements OnInit {
   ];
 
   constructor(private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private websocketService: WebsocketService) {
     this.chatHeaders[0].selected = true;
     this.router.navigate([this.chatHeaders[0].id], {relativeTo: this.route});
+    // this.websocketService.subject().subscribe(
+    //   res => {
+    //     let msg = JSON.parse(res.data);
+    //   }
+    // );
   }
 
   ngOnInit() {
@@ -69,6 +76,10 @@ export class ChatSidebarComponent implements OnInit {
 
   isSelected(chatId) {
     return _.find(this.chatHeaders, ['id', chatId]).selected;
+  }
+
+  isRead(chatId) {
+    return _.find(this.chatHeaders, ['id', chatId]).isRead;
   }
 
 }

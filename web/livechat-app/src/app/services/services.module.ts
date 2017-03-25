@@ -3,6 +3,8 @@ import {CommonModule} from '@angular/common';
 import {UserService} from "./user.service";
 import {CurrentUserService} from "./current-user.service";
 import {SettingService} from "./setting.service";
+import {BrowserModule} from '@angular/platform-browser';
+import {WebsocketService} from './websocket.service';
 import {StatisticsService} from "./statistics.service";
 import {CookieService} from "angular2-cookie/core";
 
@@ -13,6 +15,8 @@ import {CookieService} from "angular2-cookie/core";
   providers: [
     UserService,
     CurrentUserService,
+    SettingService,
+    WebsocketService,
     SettingService,
     StatisticsService,
     CookieService
