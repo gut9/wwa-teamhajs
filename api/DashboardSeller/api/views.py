@@ -94,17 +94,16 @@ class GetAuctions(APIView):
 
 class ManageMessages(APIView):
     def get(self, request):
-        if 'auction_id' not in request.GET.keys():
+        if 'auctionId' not in request.GET.keys():
             return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
-            auction_id = request.GET["auction_id"]
+            auction_id = request.GET["auctionId"]
 
-        if 'only_unread' in request.GET.keys():
-            offer = Offer.objects.get(offerId=auction_id, read=False)
-        else:
-            offer = Offer.objects.get(offerId=auction_id)
+        messages = Message.objects.filter(destOfferId=auction_id)
+        if 'userId' in request.GET.keys():
+            user_id = request.GET['userId']
+            messages = messages.filter(originUserId=user_id)
 
-        messages = offer.message_set.all()
         serializer = MessageSerializer(messages, many=True)
 
         return Response(serializer.data)
