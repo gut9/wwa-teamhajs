@@ -1,5 +1,6 @@
 <div class="sidebar list-group table-of-contents">
   <div class="sidebar__header"></div>
-  <a class="list-group-item" *ngFor="let option of options" href="#navbar"
-  [ngClass]="{'list-group-item--selected' : option.selected}">{{option.label}}</a>
+  <div class="list-group-item" *ngFor="let option of options"
+  [ngClass]="{'list-group-item--selected' : option.selected}"
+  (click)="select(option.label)">{{option.label}}</div>
 </div>

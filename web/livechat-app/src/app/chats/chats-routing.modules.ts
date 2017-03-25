@@ -10,7 +10,7 @@ const chatsRoutes: Routes = [
       {
         path: ':id',
         component: ChatComponent
-      },
+      }
     ]
   }
 ];

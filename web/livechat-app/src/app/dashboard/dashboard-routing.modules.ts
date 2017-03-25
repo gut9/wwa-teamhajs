@@ -12,8 +12,8 @@ const dashboardRoutes: Routes = [
         loadChildren: '../chats/chats.module#ChatsModule'
       },
       {
-        path : 'settings',
-        component : SettingsComponent
+        path: 'settings',
+        component: SettingsComponent
       }
     ]
   }
