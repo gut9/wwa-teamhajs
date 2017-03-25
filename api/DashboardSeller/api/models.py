@@ -104,12 +104,11 @@ class Offer(models.Model):
 
 
 class Message(models.Model):
-    roomId = models.TextField()
     offerId = models.TextField()
     authorId = models.TextField()
     clientId = models.TextField()
     text = models.TextField()
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True, blank=True)
     read = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -119,17 +118,6 @@ class Message(models.Model):
         super(Message, self).save()
         Group("%s" % self.clientId).send({'text': JSONRenderer().render(
             {'data': {'authorId': self.authorId, 'clientId': self.clientId, 'message': self.text}})})
-
-
-class TestMessage(models.Model):
-    sellerId = models.TextField()
-    clientId = models.TextField()
-    message = models.TextField()
-
-    def save(self, **kwargs):
-        super(TestMessage, self).save()
-        Group("%s" % "1").send(
-            {'text': JSONRenderer().render({'data': {'clientId': self.clientId, 'message': self.message}})})
 
 
 class FrequentlyAskedQuestions(models.Model):

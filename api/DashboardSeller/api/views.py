@@ -6,12 +6,13 @@ import json
 import urllib
 
 import requests
-from django.views import View
+from django.shortcuts import render
+from django.views.generic import View
 from rest_framework.renderers import JSONRenderer
 
 from api.models import SellerUser, NegativeFeedbacks, Feedbacks, Averages, SellerRating, NeutralFeedbacks, \
-    PositiveFeedbacks
-from api.serializers import SellerUserSerializer
+    PositiveFeedbacks, FrequentlyAskedQuestions
+from api.serializers import SellerUserSerializer, FrequentlyAskedQuestionsSerializer
 from channels import Group
 from channels.auth import channel_session_user_from_http
 from channels.sessions import channel_session
@@ -30,14 +31,20 @@ from api.serializers import OfferSerializer
 
 @channel_session_user_from_http
 def ws_connect(message):
-    Group("%s" % "1").add(message.reply_channel)
-    message.reply_channel.send({'accept': True})
-
+    try:
+        prefix, userId = message['path'].strip('/').split('/')
+        Group("%s" % userId).add(message.reply_channel)
+        message.reply_channel.send({'accept': True})
+    except:
+        pass
 
 @channel_session
 def ws_receive(message):
     # serializer = MessageSerializer(message, many=False)
-    Group("%s" % "1").send({'text': JSONRenderer().render({'data': "dupa"})})
+    response = json.loads(message.content['text'])
+    message = Message(offerId=response['auctionId'], clientId=response['clientId'], text=response['message'])
+    message.save()
+    # Group("%s" % "1").send({'text': JSONRenderer().render({'data': "dupa"})})
 
 
 @channel_session
@@ -264,11 +271,32 @@ class GetVisitStatistics(APIView):
 
 class GetFrequentlyAskedQuestions(APIView):
 
-    def post(self, request):
-        offer_id = json.loads(request.body)['offerId']
-        offer = Offer.objects.get(offerId=offer_id)
-        return Response(offer.frequentlyaskedquestions_set.all())
+    def get(self, request):
+        # offer_id = json.loads(request.body)['offerId']
+        offer = Offer.objects.all().filter(offerId=request.GET['offerId'])
+        serializer = FrequentlyAskedQuestionsSerializer(offer, many=False)
+        return Response(serializer.data)
 
+    def post(self, request):
+        response = json.loads(request.body)
+        user_id = response['userId']
+        offer_id = response['offerId']
+        question = response['question']
+        answer = response['answer']
+
+        frequently_asked_question = FrequentlyAskedQuestions(user=SellerUser.objects.get(UserId=user_id),
+                                                             offer=Offer.objects.get(offerId=offer_id), question=question,
+                                                             answer=answer)
+        offer = Offer.objects.get(offerId=offer_id)
+        offer.frequentlyaskedquestions_set.add(frequently_asked_question)
+
+        offer.save()
+        return Response(status=status.HTTP_200_OK)
+
+
+class ClientMessenger(View):
+    def get(self, request):
+        return render(request, 'index.html')
 
 class AuctionDetails(APIView):
 

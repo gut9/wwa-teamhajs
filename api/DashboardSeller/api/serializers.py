@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from api.models import SellerUser, SellerRating, Averages, Feedbacks, Message, Offer
+from api.models import SellerUser, SellerRating, Averages, Feedbacks, Message, Offer, FrequentlyAskedQuestions
 
 
 class AveragesSerializer(serializers.ModelSerializer):
@@ -51,3 +51,10 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['authorId', 'clientId', 'offerId', 'text', 'date', 'read']
+
+
+class FrequentlyAskedQuestionsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FrequentlyAskedQuestions
+        fields = ['question', 'answer']

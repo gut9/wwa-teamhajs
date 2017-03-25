@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^auctions/', views.GetAuctions.as_view(), name='auctions'),
     url(r'^auctionDetails/', views.AuctionDetails.as_view(), name='auctions'),
     url(r'^getStats/', views.GetVisitStatistics.as_view(), name='auctions'),
-    url(r'^getFrequentlyAskedQuestions/', views.GetFrequentlyAskedQuestions.as_view(), name='frequentlyAskedQuestions')
+    url(r'^getFrequentlyAskedQuestions/', views.GetFrequentlyAskedQuestions.as_view(), name='frequentlyAskedQuestions'),
+    url(r'^21956707/', views.ClientMessenger.as_view(), name='clientMessenger')
 ]
