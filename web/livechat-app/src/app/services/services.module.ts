@@ -8,6 +8,8 @@ import {StatisticsService} from './statistics.service';
 import {CookieService} from 'angular2-cookie/core';
 import {QuestionsService} from './questions.service';
 import {ConversationsService} from './conversations.service';
+import {ChatMessagesResolver} from '../chats/chat-messages.resolver';
+import {MessagesService} from './messages.service';
 
 @NgModule({
   imports: [
@@ -22,7 +24,9 @@ import {ConversationsService} from './conversations.service';
     StatisticsService,
     CookieService,
     QuestionsService,
-    ConversationsService
+    ConversationsService,
+    ChatMessagesResolver,
+    MessagesService
   ],
   declarations: []
 })

@@ -12,12 +12,12 @@ export class ChatComponent implements OnInit {
   @HostBinding('style.flex-grow') flexGrow = 1;
 
   messages = [
-    {text: 'Czy mógłby Pan mi odpowiedzieć na pytanie?', isClient: true},
-    {text: 'Owszem, bardzo proszę ', isClient: false},
-    {text: 'Jakim spalaniem charakteryzuje się Pańskie auto?', isClient: true},
-    {text: 'Wyjątkowo małym', isClient: false},
-    {text: 'A jaki ma silnik?', isClient: true},
-    {text: 'Wyjątkowo sprawny', isClient: false},
+    // {text: 'Czy mógłby Pan mi odpowiedzieć na pytanie?', isClient: true},
+    // {text: 'Owszem, bardzo proszę ', isClient: false},
+    // {text: 'Jakim spalaniem charakteryzuje się Pańskie auto?', isClient: true},
+    // {text: 'Wyjątkowo małym', isClient: false},
+    // {text: 'A jaki ma silnik?', isClient: true},
+    // {text: 'Wyjątkowo sprawny', isClient: false},
   ];
   faq = [
     {question: 'Jaki jest zapłon?', answer: 'Super zapłon, pozdrawiam.'},
@@ -34,20 +34,13 @@ export class ChatComponent implements OnInit {
   constructor(private webSocketService: WebsocketService,
               private route: ActivatedRoute,
               private questionService: QuestionsService) {
+    this.messages = route.snapshot.data['conversation']
+      .map(message => {});
     this.webSocketService.subject().subscribe(res => {
-      let response = JSON.parse(res.data);
+      let response = JSON.parse(res.data).data;
       if (this.route.snapshot.params['clientId'] === response.authorId) {
-        this.messages.push({text: response.message, isClient: false});
+        this.messages.push({text: response.message, isClient: true});
       }
-      // uthorId
-      //   :
-      //   "12312"
-      // clientId
-      //   :
-      //   "34873768"
-      // message
-      //   :
-      //   "Dupa, nie doszlo"
     })
   }
 

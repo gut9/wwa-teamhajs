@@ -2,6 +2,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {ChatsComponent} from './chats.component';
 import {ChatComponent} from './chat/chat.component';
+import {ChatMessagesResolver} from './chat-messages.resolver';
 const chatsRoutes: Routes = [
   {
     path: '',
@@ -9,7 +10,8 @@ const chatsRoutes: Routes = [
     children: [
       {
         path: 'client/:clientId/auction/:auctionId',
-        component: ChatComponent
+        component: ChatComponent,
+        resolve: {conversation: ChatMessagesResolver}
       }
     ]
   }

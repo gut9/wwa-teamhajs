@@ -37,7 +37,7 @@ export class ChatSidebarComponent implements OnInit {
   openChat(chatId, auctionId) {
     _.find(this.chatHeaders, ['selected', true]).selected = false;
     _.find(this.chatHeaders, ['clientId', chatId]).selected = true;
-    this.router.navigate(['clientId', chatId, 'auction', auctionId], {relativeTo: this.route});
+    this.router.navigate(['client', chatId, 'auction', auctionId], {relativeTo: this.route});
   }
 
   isSelected(chatId) {

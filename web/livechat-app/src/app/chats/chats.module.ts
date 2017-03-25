@@ -5,6 +5,7 @@ import { ChatComponent } from './chat/chat.component';
 import {ChatsRoutingModule} from './chats-routing.modules';
 import { ChatSidebarComponent } from './chat-sidebar/chat-sidebar.component';
 import {FormsModule} from '@angular/forms';
+import {ChatMessagesResolver} from './chat-messages.resolver';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import {FormsModule} from '@angular/forms';
   exports: [
     ChatsComponent
   ],
+  providers:[ChatMessagesResolver],
   declarations: [
     ChatsComponent,
     ChatComponent,
