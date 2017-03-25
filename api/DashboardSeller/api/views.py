@@ -153,18 +153,27 @@ class HourStatisticsGetter(APIView):
 
 class GetVisitStatistics(APIView):
     def get(self, request):
-        if 'offerId' not in request.GET.keys():
+        if 'userId' not in request.GET.keys() or 'accessToken' not in request.GET.keys():
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         access_token = request.GET['accessToken']
-        offer_id = request.GET['offerId']
-        messages = Message.objects.filter(offerId=offer_id)
-        messages_counter = 0
-        for _ in messages:
-            messages_counter += 1
+        user_id = request.GET['userId']
+        user = SellerUser.objects.get(UserId=user_id)
+        offers = Offer.objects.filter(owner=user)
+        views_data = []
 
-        response_offer_data = requests.get("https://api.natelefon.pl/v1/allegro/offers/" + offer_id + "?access_token=" + access_token)
-        views_counter = json.loads(response_offer_data.text)["views"]
+        for offer in offers:
+            offer_id = offer.offerId
+            messages = Message.objects.filter(offerId=offer_id)
+            messages_counter = 0
 
-        response_data = {'views': views_counter, 'msgCount': messages_counter}
-        return Response(response_data)
+            for _ in messages:
+                messages_counter += 1
+
+            response_offer_data = requests.get(
+                "https://api.natelefon.pl/v1/allegro/offers/" + offer_id + "?access_token=" + access_token)
+            views_counter = json.loads(response_offer_data.text)["views"]
+            data = {'views': views_counter, 'msgCount': messages_counter}
+            views_data.append(data)
+
+        return Response(views_data)
