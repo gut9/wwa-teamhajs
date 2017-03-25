@@ -11,7 +11,7 @@
          'chat-sidebar-chats__element--selected':isSelected(chatHeader.clientId)
          }"
 
-         (click)="openChat(chatHeader.clientId)">
+         (click)="openChat(chatHeader.clientId, chatHeader.auctionId)">
       <div class="chat-header__login">{{chatHeader.clientName}}</div>
       <div class="chat-header__auction">{{chatHeader.auctionName}}</div>
       <div class="chat-header__lastMessage">{{chatHeader.lastMsg}}</div>

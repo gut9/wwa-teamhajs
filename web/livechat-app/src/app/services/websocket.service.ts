@@ -30,5 +30,9 @@ export class WebsocketService {
   subject(): Subject<any> {
     return this.webSocket;
   }
+
+  send(data) {
+    this.ws.send4Promise(data);
+  }
 }
 

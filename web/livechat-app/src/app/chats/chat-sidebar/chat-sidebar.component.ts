@@ -21,7 +21,7 @@ export class ChatSidebarComponent implements OnInit {
       .then(res => {
         this.chatHeaders = res;
         this.chatHeaders[0].selected = true;
-        this.router.navigate([this.chatHeaders[0].clientId], {relativeTo: this.route});
+        this.router.navigate(['client', this.chatHeaders[0].clientId, 'auction', this.chatHeaders[0].auctionId], {relativeTo: this.route});
       });
     this.websocketService.subject().subscribe(
       res => {
@@ -34,10 +34,10 @@ export class ChatSidebarComponent implements OnInit {
   ngOnInit() {
   }
 
-  openChat(chatId) {
+  openChat(chatId, auctionId) {
     _.find(this.chatHeaders, ['selected', true]).selected = false;
     _.find(this.chatHeaders, ['clientId', chatId]).selected = true;
-    this.router.navigate([chatId], {relativeTo: this.route});
+    this.router.navigate(['clientId', chatId, 'auction', auctionId], {relativeTo: this.route});
   }
 
   isSelected(chatId) {

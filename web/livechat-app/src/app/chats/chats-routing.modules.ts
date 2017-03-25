@@ -8,7 +8,7 @@ const chatsRoutes: Routes = [
     component: ChatsComponent,
     children: [
       {
-        path: ':id',
+        path: 'client/:clientId/auction/:auctionId',
         component: ChatComponent
       }
     ]

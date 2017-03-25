@@ -1,5 +1,7 @@
 import {Component, HostBinding, OnInit} from '@angular/core';
-import {QuestionsService} from "../../services/questions.service";
+import {QuestionsService} from '../../services/questions.service';
+import {ActivatedRoute} from '@angular/router';
+import {WebsocketService} from '../../services/websocket.service';
 
 @Component({
   selector: 'app-chat',
@@ -29,7 +31,9 @@ export class ChatComponent implements OnInit {
   questionToEdit = '';
   answer = '';
 
-  constructor(private questionService: QuestionsService) {
+  constructor(private webSocketService: WebsocketService,
+              private route: ActivatedRoute,
+              private questionService: QuestionsService) {
   }
 
   ngOnInit() {
@@ -42,6 +46,12 @@ export class ChatComponent implements OnInit {
   }
 
   private submitMessage() {
+    this.webSocketService.send({
+      userId: '34873768',
+      clientId: this.route.snapshot.params['clientId'],
+      auctionId: this.route.snapshot.params['auctionId'],
+      message: this.messageToSend
+    });
     this.messages.push({text: this.messageToSend, isClient: false});
     this.messageToSend = '';
   }
@@ -54,7 +64,7 @@ export class ChatComponent implements OnInit {
     this.isFaqTurnedOn = false;
   }
 
-<<<<<<< HEAD
+
   openEditAnswer(question: string) {
     this.questionToEdit = question;
     this.isEditAnswerTurnedOn = true;
@@ -68,10 +78,9 @@ export class ChatComponent implements OnInit {
     this.questionService.saveQuestion(this.questionToEdit, this.answer)
       .then(() => this.closeEditAnswer());
   }
-=======
+
   copyAnswer(faqElement) {
     this.messages.push({text: faqElement.answer, isClient: false});
   }
 
->>>>>>> 5eb84feeaaa5d9b98f35d3dd2759da536339ba39
 }
