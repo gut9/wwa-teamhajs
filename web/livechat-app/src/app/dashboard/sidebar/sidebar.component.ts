@@ -10,7 +10,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class SidebarComponent implements OnInit {
 
   options = [
-    {label: 'CHATY', selected: true, url: 'chats'},
+    {label: 'CZATY', selected: true, url: 'chats'},
     {label: 'AUKCJE', url: 'auctions'},
     {label: 'USTAWIENIA', url: 'settings'},
     {label: 'STATYSTYKI', url: 'statistics'},
